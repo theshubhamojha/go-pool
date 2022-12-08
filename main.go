@@ -29,7 +29,7 @@ func NewGoroutinePool(maxRoutines int, process func(...interface{}) interface{})
 
 func (s *poolService) executeFunction(taskId int, payload ...interface{}) {
 	now := time.Now()
-	s.processor(payload)
+	s.processor(payload...)
 	fmt.Printf("program completed, time taken %v, taskId: %d \n", time.Now().Sub(now).Seconds(), taskId)
 	<-s.counter
 }
@@ -42,7 +42,7 @@ func (s *poolService) Process(ctx context.Context, payload ...interface{}) {
 	s.counter <- true
 	fmt.Printf("program assigned go routine for execution: %d, wait_time: %v \n", taskId, time.Now().Sub(now).Seconds())
 
-	go s.executeFunction(taskId, payload)
+	go s.executeFunction(taskId, payload...)
 }
 
 // driver code ahead
